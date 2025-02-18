@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/bhnd38/my-node-app.git'
+                git branch: 'main', credentialsId: 'jenkins-token', url: 'https://github.com/bhnd38/my-node-app'
             }
         }
 
