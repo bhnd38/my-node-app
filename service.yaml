@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-app-service
+  name: my-node-app-service
 spec:
   selector:
-    app: nodejs-app
+    app: my-node-app
   ports:
     - protocol: TCP
       port: 80
