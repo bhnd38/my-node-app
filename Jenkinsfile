@@ -2,22 +2,23 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY = "docker.io"
+        DOCKER_REGISTRY = "docker.io/hyeokbin"
         DOCKER_IMAGE = "my-node-app"
-        KUBE_CONTEXT = "my-cluster-context"
+        IMAGE_TAG = "latest"
+        KUBE_CONTEXT = "kubernetes-admin@kubernetes"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-token', url: 'https://github.com/bhnd38/my-node-app'
+                git branch: 'main', credentialsId: 'jenkins-token', url: 'https://github.com/bhnd38/my-node-app.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest")
+                    docker.build("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}")
                 }
             }
         }
@@ -26,7 +27,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-credentials') {
-                        docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest").push()
+                        docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}").push()
                     }
                 }
             }
